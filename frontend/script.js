@@ -5,6 +5,9 @@ const showQuoteButton = document.getElementById("showQuoteBtn");
 const quoteText = document.getElementById("quoteText");
 const quoteInsertForm = document.getElementById("quoteForm");
 
+const quoteInput=document.getElementById("newQuote");
+const authorInput = document.getElementById("newQuoteAuthor");
+
 console.log("Button:", showQuoteButton);
 console.log("Quote element:", quoteText);
 
@@ -29,10 +32,10 @@ showQuoteButton.addEventListener("click", async () => {
 });
 quoteInsertForm.addEventListener("submit", async (event) => {
   event.preventDefault();
-  const quote = document.getElementById("newQuote").value;
-  const author = document.getElementById("newQuoteAuthor").value;
+  const quote = quoteInput.value.trim();
+  const author = authorInput.value.trim();
 
-  const data = { quote, author };
+  const data = { quote: quote, author: author };
 
   const response = await fetch("https://sheidashab-quoteserver.hosting.codeyourfuture.io", {
     method: "POST",
@@ -42,4 +45,10 @@ quoteInsertForm.addEventListener("submit", async (event) => {
 
   const result = await response.text();
   console.log(result);
+
+  if (result==="ok"){
+    quoteText.textContent=`${quote} - ${author}` ;
+    quoteInput.value="";
+    authorInput.value="";
+  }
 });
